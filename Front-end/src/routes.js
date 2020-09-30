@@ -12,8 +12,6 @@ export default class Routes extends Component{
         this.state = {idUser: ""};
     }
 
-
-
     render(){
         return(
             <BrowserRouter>

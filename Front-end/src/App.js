@@ -1,11 +1,8 @@
 import React from 'react';
-//import api from './services/api';
-
+import './styles.css'
+import Header from './components/header';
+import Bar from './components/bar';
 import Routes from "./routes";
-
-import Header from './components/header/header';
-import Bar from './components/bar/bar';
-
 
 const App = () => (
   <div className="App">
@@ -14,6 +11,5 @@ const App = () => (
     <Routes />
   </div>
 );
-
 
 export default App;

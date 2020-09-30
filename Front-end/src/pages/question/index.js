@@ -1,37 +1,35 @@
 import React, {Component} from 'react';
 import api from '../../services/api';
-import axios from 'axios';
+import './styles.css'
 
 export default class Question extends Component{
 
-        state = {
+    state = {
         question: {},
         responses: [],
         respostasInfo: {},
+        login: '',
         page: 1
     }
     
-    
-
     async componentDidMount(page = 1){
         const {id} = this.props.match.params;
         
-        const response = await axios.all([
-            axios.get('http://localhost:3001/perguntas/' + id),
-            axios.get('http://localhost:3001/respostas/' + id + '?page=' + page)
-        ])
-
-        const {docs, ...respostasInfo} = response[1].data;
-
-        this.setState({question: response[0].data, responses: docs, respostasInfo, page})
+        const perguntas = await api.get(`/perguntas/${id}`);
+        const response1 = await api.get(`/respostas/${id}?page=${page}`);
+        const resp_usuario = await api.get(`/usuarios/${perguntas.data.idUsuario}`);
+        
+        const { docs, ...respostasInfo } = response1.data;
+        const { data } = perguntas;
+        const { login} = resp_usuario.data;
+        
+        this.setState({question: data, responses: docs, respostasInfo, login, page})
 
         console.log(this.props);
-
     }
 
-
     prevPage = () => {
-        const {page, respostasInfo} = this.state;
+        const {page} = this.state;
 
         if(page === 1) return;
 
@@ -50,12 +48,12 @@ export default class Question extends Component{
 
 
     render(){
-        const {question, responses} = this.state;
+        const {question, responses, login} = this.state;
         return(
             <div className="pergunta-info">
                 <h1>{question.titulo}</h1>
-                <h2>{question.categoria}</h2>
-                <h3>{question.idUsuario}</h3>
+                <h2>Categoria: {question.categoria}</h2>
+                <h3>Usuario: {login}</h3>
                 <p>{question.texto}</p>
 
                 <div className='lista-resposta'>
