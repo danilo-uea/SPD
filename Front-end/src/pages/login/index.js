@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import api from "../../services/api";
+import { Form, Row, Col, Button } from 'react-bootstrap';
 
 export default class Login extends Component{
 
@@ -30,20 +31,39 @@ export default class Login extends Component{
 
     render(){
         return(
-            <container>
-                <form onSubmit={this.handleSingUp}>
-        {this.state.error && <p>{this.state.error}</p>}
-                    <input type="text" 
-                            placeholder="Login"    
+            <Form onSubmit={this.handleSingUp}>
+                {this.state.error && <p>{this.state.error}</p>}
+                <Form.Group as={Row} controlId="formHorizontalEmail">
+                    <Form.Label column sm={2}>
+                        Login
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control 
+                            type="text" 
+                            placeholder="Login" 
                             onChange={e => this.setState({login: e.target.value})} 
-                    />
-                    <input type="password" 
-                            placeholder="senha"    
-                            onChange={e => this.setState({senha: e.target.value})} 
-                    />
-                    <button type="submit">Efetuar Login</button>
-                </form>
-            </container>
+                        />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="formHorizontalPassword">
+                    <Form.Label column sm={2}>
+                        Senha
+                    </Form.Label>
+                    <Col sm={10}>
+                        <Form.Control 
+                            type="password" 
+                            placeholder="Senha" 
+                            onChange={e => this.setState({senha: e.target.value})}
+                        />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 10, offset: 2 }}>
+                    <Button type="submit">Efetuar Login</Button>
+                    </Col>
+                </Form.Group>
+            </Form>
         )
     }
-    };
+};

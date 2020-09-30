@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import api from "../../services/api";
-import { Link } from "react-router-dom";
+import { Button, Card } from 'react-bootstrap';
 import './styles.css';
 
 export default class Main extends Component {
-
     state = {
         perguntas: [],
         perguntasInfo: {},
@@ -43,22 +42,25 @@ export default class Main extends Component {
     }
 
     render(){
-
         const { perguntas, page, perguntasInfo } = this.state;
 
         return (
-            <div className='lista-perguntas'>
+            <div className="lista-perguntas">
                 {perguntas.map(pergunta => (
-                    <article key={pergunta._id}>
-                        <strong>{pergunta.titulo}</strong>
-                        <p>{pergunta.categoria}</p>
-                        <p>{pergunta.idUsuario}</p>
-                        <Link to={`/pergunta/${pergunta._id}`}>Acessar</Link>
-                    </article>
+                    <Card key={pergunta._id}>
+                        <Card.Header>{pergunta.titulo}</Card.Header>
+                        <Card.Body>
+                            <Card.Title>{pergunta.texto}</Card.Title>
+                            <Card.Text>
+                                {pergunta.publicacao}
+                            </Card.Text>
+                            <Button href={`pergunta/${pergunta._id}`}>Acessar</Button>
+                        </Card.Body>
+                    </Card>
                 ))}
-                <div className="actions">
-                    <button disabled={page === 1} onClick={this.prevPage}>Anterior</button>
-                    <button disabled={page === perguntasInfo.pages} onClick={this.nextPage}>Proxima</button>
+                <div className="botoes">
+                    <Button disabled={page === 1} onClick={this.prevPage}>Anterior</Button>
+                    <Button disabled={page === perguntasInfo.pages} onClick={this.nextPage}>Proxima</Button>
                 </div>
             </div>
         );
