@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import api from '../../services/api';
+import { Form, InputGroup, FormControl, Button, Card, ListGroup } from 'react-bootstrap';
 import './styles.css'
 
 export default class Question extends Component{
@@ -8,7 +9,7 @@ export default class Question extends Component{
         question: {},
         responses: [],
         respostasInfo: {},
-        login: '',
+        perg_login: '',
         page: 1
     }
     
@@ -16,16 +17,14 @@ export default class Question extends Component{
         const {id} = this.props.match.params;
         
         const perguntas = await api.get(`/perguntas/${id}`);
-        const response1 = await api.get(`/respostas/${id}?page=${page}`);
-        const resp_usuario = await api.get(`/usuarios/${perguntas.data.idUsuario}`);
+        const responstas = await api.get(`/respostas/${id}?page=${page}`);
+        const usu = await api.get(`/usuarios/${perguntas.data.idUsuario}`);
         
-        const { docs, ...respostasInfo } = response1.data;
+        const { docs, ...respostasInfo } = responstas.data;
         const { data } = perguntas;
-        const { login} = resp_usuario.data;
+        const { login } = usu.data;
         
-        this.setState({question: data, responses: docs, respostasInfo, login, page})
-
-        console.log(this.props);
+        this.setState({question: data, responses: docs, respostasInfo, perg_login: login, page});
     }
 
     prevPage = () => {
@@ -48,31 +47,45 @@ export default class Question extends Component{
 
 
     render(){
-        const {question, responses, login} = this.state;
+        const {question, responses, perg_login} = this.state;
+
         return(
             <div className="pergunta-info">
-                <h1>{question.titulo}</h1>
-                <h2>Categoria: {question.categoria}</h2>
-                <h3>Usuario: {login}</h3>
-                <p>{question.texto}</p>
-
-                <div className='lista-resposta'>
-                {responses.map(response => (
-                    <article key={response._id}>
-                        <h3>{response.idUsuario}</h3>
-                        <p>{response.texto}</p>
-                    </article>
-                ))}
-                <div className="actions">
-                    <button onClick={this.prevPage}>Anterior</button>
-                    <button onClick={this.nextPage}>Proxima</button>
+                <Card>
+                    <Card.Header as="h5">{question.titulo}</Card.Header>
+                    <Card.Body>
+                        <Card.Title>{question.texto}</Card.Title>
+                        <Card.Text>
+                            Categoria:  {question.categoria}<br></br>
+                        </Card.Text>
+                        <div className="login-data">{perg_login} - {question.publicacao}</div>
+                    </Card.Body>
+                </Card>
+                <hr />
+                <p className="resposta-p">Respostas</p>
+                <Card>
+                    <ListGroup variant="flush">
+                        {responses.map(response => (
+                            <ListGroup.Item key={response._id}>
+                                <p>{response.texto}</p>
+                                <p className="login-data">{response.idUsuario} - {response.publicacao}</p>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                </Card>
+                <div className="botoes">
+                    <Button onClick={this.prevPage}>Anterior</Button>
+                    <Button onClick={this.nextPage}>Proxima</Button>
                 </div>
-            </div>
-            <div>
-                <h1>Responder pergunta</h1>
-                <input placeholder="Resposta"></input>
-                <button>submeter resposta</button>
-            </div>
+                <Form className="formulario" onSubmit={this.handleSingUp}>
+                    <InputGroup>
+                        <InputGroup.Prepend>
+                        <InputGroup.Text>Responder pergunta</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl as="textarea" aria-label="With textarea" />
+                    </InputGroup>
+                    <Button className="botao" type="submit">Submeter resposta</Button>
+                </Form>
             </div>
           
         );
