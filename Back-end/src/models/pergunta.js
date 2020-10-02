@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
 const PerguntaSchema = new mongoose.Schema({
-    idUsuario: {
-        type: String,
-        required: true,
-    },
     titulo: {
         type: String,
         required: true
@@ -21,7 +17,16 @@ const PerguntaSchema = new mongoose.Schema({
     publicacao: {
         type: Date,
         default: Date.now,
-    }
+    },
+    usuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario',
+        require: true
+    },
+    respostas: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Resposta'
+    }]
 });
 
 PerguntaSchema.plugin(mongoosePaginate);

@@ -4,12 +4,11 @@ import { Form, InputGroup, FormControl, Button, Card, ListGroup } from 'react-bo
 import './styles.css'
 
 export default class Question extends Component{
-
     state = {
-        question: {},
-        responses: [],
-        respostasInfo: {},
-        perg_login: '',
+        questao: {},
+        respostas: [],
+        //respostasInfo: {},
+        usuario: {},
         page: 1
     }
     
@@ -17,14 +16,15 @@ export default class Question extends Component{
         const {id} = this.props.match.params;
         
         const perguntas = await api.get(`/perguntas/${id}`);
-        const responstas = await api.get(`/respostas/${id}?page=${page}`);
-        const usu = await api.get(`/usuarios/${perguntas.data.idUsuario}`);
+        //const respostas = await api.get(`/respostas/${id}?page=${page}`);
+        const respostas = await api.get(`/respostas/${id}`);
+        const { data } = respostas;
         
-        const { docs, ...respostasInfo } = responstas.data;
-        const { data } = perguntas;
-        const { login } = usu.data;
+        //const { docs, ...respostasInfo } = responstas.data;
+        const { usuario, ...questao } = perguntas.data;
         
-        this.setState({question: data, responses: docs, respostasInfo, perg_login: login, page});
+        this.setState({questao, usuario, respostas: data, page});
+        //this.setState({question: data, page});
     }
 
     prevPage = () => {
@@ -45,38 +45,37 @@ export default class Question extends Component{
         this.componentDidMount(pageNumber);
     }
 
-
     render(){
-        const {question, responses, perg_login} = this.state;
+        const {questao, respostas, usuario} = this.state;
 
         return(
             <div className="pergunta-info">
                 <Card>
-                    <Card.Header as="h5">{question.titulo}</Card.Header>
+                    <Card.Header as="h5">{questao.titulo}</Card.Header>
                     <Card.Body>
-                        <Card.Title>{question.texto}</Card.Title>
+                        <Card.Title>{questao.texto}</Card.Title>
                         <Card.Text>
-                            Categoria:  {question.categoria}<br></br>
+                            Categoria:  {questao.categoria}<br></br>
                         </Card.Text>
-                        <div className="login-data">{perg_login} - {question.publicacao}</div>
+                        <div className="login-data">{usuario.login} - {questao.publicacao}</div>
                     </Card.Body>
                 </Card>
                 <hr />
                 <p className="resposta-p">Respostas</p>
                 <Card>
                     <ListGroup variant="flush">
-                        {responses.map(response => (
+                        {respostas.map(response => (
                             <ListGroup.Item key={response._id}>
                                 <p>{response.texto}</p>
-                                <p className="login-data">{response.idUsuario} - {response.publicacao}</p>
+                                <p className="login-data">{response.usuario.login} - {response.publicacao}</p>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
                 </Card>
-                <div className="botoes">
+                {/* <div className="botoes">
                     <Button onClick={this.prevPage}>Anterior</Button>
                     <Button onClick={this.nextPage}>Proxima</Button>
-                </div>
+                </div> */}
                 <Form className="formulario" onSubmit={this.handleSingUp}>
                     <InputGroup>
                         <InputGroup.Prepend>
