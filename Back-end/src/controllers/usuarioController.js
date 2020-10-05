@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 const Usuario = mongoose.model("Usuario");
+const jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth.json');
 
 module.exports = {
 
     async confirmUsuario(req, res){
         const {login, senha} = req.params;
         const usuario = await Usuario.findOne({"login": login, "senha": senha});
-        return res.json(usuario);
+
+        const token = jwt.sign({id: usuario.id}, authConfig.secret, {expiresIn: 7200});
+
+        return res.json({usuario, token});
     },
 
     async indexUsuario(req, res){

@@ -19,7 +19,6 @@ export default class Main extends Component {
         const response = await api.get(`/perguntas?page=${page}`);
 
         const { docs, ...perguntasInfo } = response.data;
-
         this.setState({ perguntas: docs, perguntasInfo, page});
     };
 
@@ -43,7 +42,7 @@ export default class Main extends Component {
 
     render(){
         const { perguntas, page, perguntasInfo } = this.state;
-
+        
         return (
             <div className="lista-perguntas">
                 {perguntas.map(pergunta => (

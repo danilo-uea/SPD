@@ -9,7 +9,9 @@ export default class Question extends Component{
         respostas: [],
         //respostasInfo: {},
         usuario: {},
-        page: 1
+        page: 1,
+        resp : "",
+        token: localStorage.getItem('token-do-usuario')
     }
     
     async componentDidMount(page = 1){
@@ -45,9 +47,26 @@ export default class Question extends Component{
         this.componentDidMount(pageNumber);
     }
 
+    submeterResposta = async e => {
+        e.preventDefault();
+        const {resp, token} = this.state;
+        const header={"authorization": "bearer " + token}
+        console.log(this.state);
+        if(!resp || token === ""){
+            console.error("Resposta invalida ou usuario nao logado");
+        }else{
+            try{
+                await api.post("/respostas", {"texto": resp, "pergunta": this.props.match.params.id}, {headers: header});
+                this.componentDidMount();
+            }catch(err){
+                alert("errou");
+            }
+        }
+
+    }
+
     render(){
         const {questao, respostas, usuario} = this.state;
-
         return(
             <div className="pergunta-info">
                 <Card>
@@ -76,12 +95,12 @@ export default class Question extends Component{
                     <Button onClick={this.prevPage}>Anterior</Button>
                     <Button onClick={this.nextPage}>Proxima</Button>
                 </div> */}
-                <Form className="formulario" onSubmit={this.handleSingUp}>
+                <Form className="formulario" onSubmit={this.submeterResposta}>
                     <InputGroup>
                         <InputGroup.Prepend>
                         <InputGroup.Text>Responder pergunta</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl as="textarea" aria-label="With textarea" />
+                        <FormControl as="textarea" aria-label="With textarea" onChange={e => this.setState(({resp: e.target.value}))}/>
                     </InputGroup>
                     <Button className="botao" type="submit">Submeter resposta</Button>
                 </Form>

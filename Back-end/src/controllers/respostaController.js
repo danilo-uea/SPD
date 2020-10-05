@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const Resposta = mongoose.model("Resposta");
+const Pergunta = mongoose.model("Pergunta")
 
 module.exports = {
+
     async PerguntaResposta(req, res){
         const {id} = req.params;
         console.log(id);
@@ -18,7 +20,13 @@ module.exports = {
     },
 
     async storeResposta(req, res){
-        const resposta = await Resposta.create(req.body);
+        //return res.json(req.body);
+        const {texto, pergunta } = req.body;
+        
+        const resposta = await Resposta.create({"texto": texto, "pergunta": pergunta , "usuario": req.userId});
+        
+       // await Pergunta.findByIdAndUpdate(pergunta, {"respostas": push({pergunta})},{new: true})
+
         return res.json(resposta);
     },
     async updateResposta(req, res){

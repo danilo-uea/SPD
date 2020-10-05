@@ -7,7 +7,8 @@ export default class Login extends Component{
     state = {
         login: "",
         senha: "",
-        error: ""
+        error: "",
+        token: ""
     };
 
     handleSingUp = async e => {
@@ -22,11 +23,13 @@ export default class Login extends Component{
                 const response = await api.get("/usuarios/" + login + "/" + senha);
                 //this.props.history.push("/");
                 console.log(response.data);
+                this.setState({token: response.data.token})
             }catch(err){
                 console.log(err);
                 this.setState({error: "erro ao prucurar o registro"});
                 } 
             }
+            localStorage.setItem('token-do-usuario', this.state.token);
         }
 
     render(){

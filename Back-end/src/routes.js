@@ -7,6 +7,8 @@ const respostaController = require('./controllers/respostaController');
 const chatController = require('./controllers/chatController');
 const mensagemController = require('./controllers/mensagemController');
 
+const auth = require('./middleware/auth');
+//todas as rotas com auth sao aquelas em o usuario tem que estar logado
 
 routes.get("/usuarios/:login/:senha", usuarioController.confirmUsuario);
 routes.get("/usuarios", usuarioController.indexUsuario);
@@ -17,13 +19,13 @@ routes.delete("/usuarios/:id", usuarioController.removeUsuario);
 
 routes.get("/perguntas", perguntaController.indexPergunta);
 routes.get('/perguntas/:id', perguntaController.showPergunta);
-routes.post("/perguntas", perguntaController.storePergunta);
+routes.post("/perguntas", auth ,perguntaController.storePergunta);
 routes.put("/perguntas/:id", perguntaController.updatePergunta);
 routes.delete("/perguntas/:id", perguntaController.removePergunta);
 
 routes.get("/respostas/:id", respostaController.PerguntaResposta);
 routes.get("/respostas", respostaController.indexResposta);
-routes.post("/respostas", respostaController.storeResposta);
+routes.post("/respostas", auth ,respostaController.storeResposta);
 routes.put("/respostas/:id", respostaController.updateResposta);
 routes.delete("/respostas/:id", respostaController.removeResposta);
 
