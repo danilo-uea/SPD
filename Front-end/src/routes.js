@@ -1,11 +1,11 @@
 import React from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
-import Main from "./pages/main/index";
-import Login from "./pages/login/index";
-import Register from "./pages/register/index";
-import Question from "./pages/question/index";
-import CreateQuestion from "./pages/createQuestion/index";
+import Main from "./pages/main";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Question from "./pages/question";
+import CreateQuestion from "./pages/createQuestion";
 
 const Routes = () => (
     <BrowserRouter>

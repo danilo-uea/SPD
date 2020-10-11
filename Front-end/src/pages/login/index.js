@@ -1,14 +1,13 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Alert } from 'react-bootstrap';
 
 export default class Login extends Component{
 
     state = {
         login: "",
         senha: "",
-        error: "",
-        token: ""
+        error: ""
     };
 
     handleSingUp = async e => {
@@ -16,26 +15,24 @@ export default class Login extends Component{
         const {login, senha} = this.state;
 
         if(!login || !senha){
-            this.setState({error: "preencha todos os campos"});
-        }
-        else{
-            try{
+            this.setState({error: "Preencha todos os campos"});
+        } else {
+            try {
                 const response = await api.get("/usuarios/" + login + "/" + senha);
-                //this.props.history.push("/");
-                console.log(response.data);
-                this.setState({token: response.data.token})
-            }catch(err){
-                console.log(err);
-                this.setState({error: "erro ao prucurar o registro"});
+                localStorage.setItem('token-do-usuario', response.data.token);
+                localStorage.setItem('login-do-usuario', login);
+                window.location.href = '/';
+            } catch(err) {
+                    console.log(err);
+                    this.setState({error: "Erro ao prucurar o registro"});
                 } 
             }
-            localStorage.setItem('token-do-usuario', this.state.token);
         }
 
     render(){
         return(
             <Form onSubmit={this.handleSingUp}>
-                {this.state.error && <p>{this.state.error}</p>}
+                {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
                 <Form.Group as={Row} controlId="formHorizontalEmail">
                     <Form.Label column sm={2}>
                         Login

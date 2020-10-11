@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Alert } from 'react-bootstrap';
 
 export default class Register extends Component{
 
@@ -15,12 +15,12 @@ export default class Register extends Component{
         const {login, senha} = this.state;
 
         if(!login || !senha){
-            this.setState({error: "preencha todos os campos"});
+            this.setState({error: "Preencha todos os campos"});
         }
         else{
             try{
                 await api.post("/usuarios",{login, senha});
-                //this.props.history.push("/");
+                window.location.href = '/';
             }catch(err){
                 console.log(err);
                 this.setState({error: "erro ao efetuar o registro"});
@@ -31,7 +31,7 @@ export default class Register extends Component{
     render(){
         return(
             <Form onSubmit={this.handleSingUp}>
-                {this.state.error && <p>{this.state.error}</p>}
+                {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
                 <Form.Group as={Row} controlId="formHorizontalEmail">
                     <Form.Label column sm={2}>
                         Login

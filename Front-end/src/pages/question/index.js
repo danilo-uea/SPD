@@ -7,7 +7,6 @@ export default class Question extends Component{
     state = {
         questao: {},
         respostas: [],
-        //respostasInfo: {},
         usuario: {},
         page: 1,
         resp : "",
@@ -15,22 +14,18 @@ export default class Question extends Component{
     }
     
     async componentDidMount(page = 1){
-        const {id} = this.props.match.params;
-        
+        const { id } = this.props.match.params;
+                
         const perguntas = await api.get(`/perguntas/${id}`);
-        //const respostas = await api.get(`/respostas/${id}?page=${page}`);
         const respostas = await api.get(`/respostas/${id}`);
         const { data } = respostas;
-        
-        //const { docs, ...respostasInfo } = responstas.data;
         const { usuario, ...questao } = perguntas.data;
         
         this.setState({questao, usuario, respostas: data, page});
-        //this.setState({question: data, page});
     }
 
     prevPage = () => {
-        const {page} = this.state;
+        const { page } = this.state;
 
         if(page === 1) return;
 
@@ -50,15 +45,14 @@ export default class Question extends Component{
     submeterResposta = async e => {
         e.preventDefault();
         const {resp, token} = this.state;
-        const header={"authorization": "bearer " + token}
-        console.log(this.state);
+        const header = {"authorization": "bearer " + token}
         if(!resp || token === ""){
             console.error("Resposta invalida ou usuario nao logado");
-        }else{
-            try{
+        } else {
+            try {
                 await api.post("/respostas", {"texto": resp, "pergunta": this.props.match.params.id}, {headers: header});
                 this.componentDidMount();
-            }catch(err){
+            } catch(err) {
                 alert("errou");
             }
         }
@@ -67,7 +61,9 @@ export default class Question extends Component{
 
     render(){
         const {questao, respostas, usuario} = this.state;
+        
         return(
+
             <div className="pergunta-info">
                 <Card>
                     <Card.Header as="h5">{questao.titulo}</Card.Header>
@@ -91,10 +87,6 @@ export default class Question extends Component{
                         ))}
                     </ListGroup>
                 </Card>
-                {/* <div className="botoes">
-                    <Button onClick={this.prevPage}>Anterior</Button>
-                    <Button onClick={this.nextPage}>Proxima</Button>
-                </div> */}
                 <Form className="formulario" onSubmit={this.submeterResposta}>
                     <InputGroup>
                         <InputGroup.Prepend>
@@ -105,7 +97,6 @@ export default class Question extends Component{
                     <Button className="botao" type="submit">Submeter resposta</Button>
                 </Form>
             </div>
-          
         );
     }
 }

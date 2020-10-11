@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Alert } from 'react-bootstrap';
 
 export default class CreateQuestion extends Component{
 
@@ -16,11 +16,12 @@ export default class CreateQuestion extends Component{
         const {titulo, categoria, texto, token} = this.state;
         const header={"authorization": "bearer " + token}
         if(!titulo || !categoria || !texto){
-            this.setState({error: "preencha todos os campos"});
+            this.setState({error: "Preencha todos os campos"});
         }
-        else{
-            try{
+        else {
+            try {
                 await api.post("/perguntas",{titulo, categoria, texto, "usuario": token}, {headers: header});
+                window.location.href = '/'
             }catch(err){
                 console.log(err);
                 this.setState({error: "erro ao efetuar o registro"});
@@ -30,15 +31,19 @@ export default class CreateQuestion extends Component{
 
     render(){
         if(this.state.token === "")
-            return(<h1>Por favor, faça o login</h1>)
+            return(
+                <Alert variant="success">
+                    <Alert.Heading>Por favor, faça o login.</Alert.Heading>
+                </Alert>
+            );
         else
         return(
             <Form onSubmit={this.handleSingUp}>
-                {this.state.error && <p>{this.state.error}</p>}
+                {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
 
                 <Form.Group as={Row} controlId="formHorizontalEmail">
                     <Form.Label column sm={2}>
-                        titulo
+                        Título
                     </Form.Label>
                     <Col sm={10}>
                         <Form.Control 
@@ -64,11 +69,12 @@ export default class CreateQuestion extends Component{
 
                 <Form.Group as={Row} controlId="formHorizontalPassword">
                     <Form.Label column sm={2}>
-                        texto
+                        Texto
                     </Form.Label>
                     <Col sm={10}>
                         <Form.Control 
-                            type="text" 
+                            as="textarea" 
+                            rows="4"
                             placeholder="Especifique aqui a sua duvida" 
                             onChange={e => this.setState({texto: e.target.value})}
                         />
