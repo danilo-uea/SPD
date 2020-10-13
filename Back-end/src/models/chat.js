@@ -2,13 +2,10 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 
 const ChatSchema = new mongoose.Schema({
-    idChat: {
-        type: String,
-        required: true
-    },
-    idsUsuarios: {
-        type: Array,
-        required: true,
+    idCriador: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario',
+        require: true
     },
     titulo: {
         type: String,

@@ -31,13 +31,17 @@ routes.delete("/respostas/:id", respostaController.removeResposta);
 
 routes.get("/chats", chatController.indexChat);
 routes.get("/chats/:id", chatController.showChat);
-routes.post("/chats", chatController.storeChat);
+routes.post("/chats", auth, chatController.storeChat);
 routes.put("/chats/:id", chatController.updateChat);
 routes.delete("/chats/:id", chatController.removeChat);
+routes.post("/chats/add", chatController.addNovoUsuario);
+routes.get("/usuarioChat", auth, chatController.UsuarioChat);
+routes.get("/chatUsuario/:id", chatController.ChatUsuario);
 
 routes.get("/mensagens", mensagemController.indexMensagem);
 routes.get("/mensagens/:id", mensagemController.showMensagem);
-routes.post("/mensagens", mensagemController.storeMensagem);
+routes.get("/mensagens/chat/:id", mensagemController.mensagemChat);
+routes.post("/mensagens", auth, mensagemController.storeMensagem);
 routes.put("/mensagens/:id", mensagemController.updateMensagem);
 routes.delete("/mensagens/:id", mensagemController.removeMensagem);
 

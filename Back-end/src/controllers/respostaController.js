@@ -6,6 +6,7 @@ module.exports = {
 
     async PerguntaResposta(req, res){
         const {id} = req.params;
+        console.log(id);
         //const {page = 1} = req.query;
         const respostas = await Resposta.find({"pergunta": id}).populate('usuario');
         //const respostas = await Resposta.paginate({"idPergunta": id}, {page, limit: 10});
@@ -19,7 +20,6 @@ module.exports = {
     },
 
     async storeResposta(req, res){
-        //return res.json(req.body);
         const {texto, pergunta } = req.body;
         
         const resposta = await Resposta.create({"texto": texto, "pergunta": pergunta , "usuario": req.userId});

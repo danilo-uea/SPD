@@ -1,11 +1,15 @@
 import React from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 
-import Main from "./pages/main";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import Question from "./pages/question";
-import CreateQuestion from "./pages/createQuestion";
+import Main from "./pages/main/index";
+import Login from "./pages/login/index";
+import Register from "./pages/register/index";
+import Question from "./pages/question/index";
+import CreateQuestion from "./pages/createQuestion/index";
+import ChatMenu from "./pages/chatMenu/index";
+import ChatRoom from "./pages/chatRoom/index";
+import ChatAdd from "./pages/chatAdd/index";
+import CreateChat from "./pages/createChat/index";
 
 const Routes = () => (
     <BrowserRouter>
@@ -15,6 +19,10 @@ const Routes = () => (
             <Route path="/registrar" component={Register} />
             <Route path="/pergunta/:id" component={Question} />
             <Route path="/enviarPergunta" component={CreateQuestion} />
+            <Route exact path="/chat" component={ChatMenu} />
+            <Route exact path="/chat/:id" component={ChatRoom} />
+            <Route path="/chat/add/:id" component={ChatAdd} />
+            <Route path="/criarChat" component={CreateChat} />
         </Switch>
     </BrowserRouter>
 );

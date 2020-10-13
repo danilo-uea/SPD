@@ -70,7 +70,7 @@ export default class Header extends Component{
                             <Nav className="mr-auto">
                                 <Nav.Link href="/">Home</Nav.Link>
                                 <Nav.Link href="/enviarPergunta">Enviar pergunta</Nav.Link>
-                                <Nav.Link href="/">Chat</Nav.Link>
+                                <Nav.Link href="/chat">Chat</Nav.Link>
                             </Nav>
                             {this.isLogin()}
                         </Navbar.Collapse>
