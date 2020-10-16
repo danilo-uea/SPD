@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import {Card, Button, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 
 
 export default class ChatAdd extends Component{
     state = {
-        usuarios: [],
-        selecionados: []
+        usuarios: []
     }
 
     componentDidMount(){
@@ -25,26 +24,16 @@ export default class ChatAdd extends Component{
     }
 
 
-    adicionarUsuario = () =>{
-        const {selecionados} = this.state;
-        selecionados.map( async (selecionado) => (
-            await api.post("/chats/add",{"idUsuario": selecionado, "idChat": this.props.match.params.id})
-        ))
-        alert("Usuarios adicionados");
-    }
+    adicionarUsuario = async () => {        
+        var achk = document.getElementsByName("item");
 
-    selecionarUsuario = e =>{
-        e.preventDefault();
-        const target = e.target;
-        var {selecionados} = this.state;
-        if(target.checked)
-            selecionados.push(target.name)   
-        else
-            selecionados = selecionados.filter(selecionado => (selecionado !== target.name))
-        this.setState({selecionados: selecionados})
+        for (var i=0;i<achk.length;i++){
+            if (achk[i].checked) {
+                await api.post("/chats/add",{"idUsuario": achk[i].value, "idChat": this.props.match.params.id});
+            }
+        }
+        window.location.href = `/chat/${this.props.match.params.id}`;
     }
-
-   
 
     render(){
         const {usuarios} = this.state;
@@ -52,27 +41,18 @@ export default class ChatAdd extends Component{
             <div className="lista-usuarios">
                 <Form>
                     {usuarios.map(usuario =>(
-                        <Card key={usuario._id}>
-                            <label>
-                            <input 
+                        <Form.Group key={usuario._id} controlId="formBasicCheckbox">
+                            <Form.Check
+                                value={usuario._id} 
+                                name="item"
                                 type="checkbox" 
-                                name={usuario._id}
-                                onChange={this.selecionarUsuario}
-                                ></input>
-                            {usuario.login}
-                        </label>
-                        </Card>
+                                label={usuario.login} 
+                            />
+                        </Form.Group>
                     ))}   
                 </Form> 
                 <Button type="submit" onClick={this.adicionarUsuario}>Adicionar usuarios selecionados</Button>
             </div>   
         );
     }
-} /*{usuarios.map(usuario => (
-                    <Card key={usuario._id}>
-                        <Card.Header>{usuario.login}</Card.Header>
-                        <Card.Body>
-                            <Button>Acessar</Button>
-                        </Card.Body>
-                    </Card>
-                 ))}*/
+}

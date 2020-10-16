@@ -24,7 +24,7 @@ export default class CreateQuestion extends Component{
                 window.location.href = '/'
             }catch(err){
                 console.log(err);
-                this.setState({error: "erro ao efetuar o registro"});
+                this.setState({error: "Erro ao efetuar o registro"});
                 } 
             }
         }

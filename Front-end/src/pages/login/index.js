@@ -23,11 +23,12 @@ export default class Login extends Component{
                 localStorage.setItem('login-do-usuario', login);
                 window.location.href = '/';
             } catch(err) {
-                    console.log(err);
-                    this.setState({error: "Erro ao prucurar o registro"});
-                } 
-            }
+                console.log(err);
+                this.setState({error: "Erro ao prucurar o registro"});
+            } 
+            
         }
+    }
 
     render(){
         return(

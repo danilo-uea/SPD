@@ -1,0 +1,12 @@
+INSTALAR BACKEND
+-npm install socket.io
+
+INSTALAR FRONTEND
+-npm install socket.io-client
+
+EXECUTAR BACKEND
+npm run dev
+npm run devChat
+
+EXECUTAR FRONTEND
+npm start

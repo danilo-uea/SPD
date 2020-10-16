@@ -52,11 +52,11 @@ export default class Question extends Component{
             try {
                 await api.post("/respostas", {"texto": resp, "pergunta": this.props.match.params.id}, {headers: header});
                 this.componentDidMount();
+                document.getElementById('texto').value = '';
             } catch(err) {
                 alert("errou");
             }
         }
-
     }
 
     render(){
@@ -92,7 +92,7 @@ export default class Question extends Component{
                         <InputGroup.Prepend>
                         <InputGroup.Text>Responder pergunta</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl as="textarea" aria-label="With textarea" onChange={e => this.setState(({resp: e.target.value}))}/>
+                        <FormControl id="texto" as="textarea" aria-label="With textarea" onChange={e => this.setState(({resp: e.target.value}))}/>
                     </InputGroup>
                     <Button className="botao" type="submit">Submeter resposta</Button>
                 </Form>

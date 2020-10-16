@@ -46,7 +46,7 @@ export default class Main extends Component {
         return (
             <div className="lista-perguntas">
                 {perguntas.map(pergunta => (
-                    <Card key={pergunta._id}>
+                    <Card key={pergunta._id} style={{ marginBottom: '20px' }}>
                         <Card.Header>{pergunta.titulo}</Card.Header>
                         <Card.Body>
                             <Card.Title>{pergunta.texto}</Card.Title>

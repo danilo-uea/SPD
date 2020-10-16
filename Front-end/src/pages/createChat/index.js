@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import { Form, Row, Col, Button } from 'react-bootstrap';
-
+import { Form, Row, Col, Button, Alert } from 'react-bootstrap';
 
 export default class CreateChat extends Component{
     state = {
@@ -14,15 +13,15 @@ export default class CreateChat extends Component{
         const {titulo, token} = this.state;
         const header={"authorization": "bearer " + token}
         if(!titulo){
-            this.setState({error: "preencha todos os campos"});
-            alert("Por favor, insira o titulo do chat");
+            this.setState({error: "Por favor, insira o titulo do chat"});
         }
         else{
-            try{
-                await api.post("/chats",{titulo}, {headers: header});
-            }catch(err){
+            try {
+                await api.post("/chats", {titulo}, {headers: header});
+                window.location.href = '/chat';
+            } catch(err) {
                 console.log(err);
-                this.setState({error: "erro ao efetuar o registro"});
+                this.setState({error: "Erro ao efetuar o registro"});
                 } 
             }
         }
@@ -32,16 +31,16 @@ export default class CreateChat extends Component{
         return(
             <div className="chat-criar">
                 <Form onSubmit={this.handleSingUp}>
-                    {this.state.error && <p>{this.state.error}</p>}
+                    {this.state.error && <Alert variant="danger">{this.state.error}</Alert>}
 
                         <Form.Group as={Row} controlId="formHorizontalEmail">
                             <Form.Label column sm={2}>
-                                titulo
+                                Título
                             </Form.Label>
                             <Col sm={10}>
                                 <Form.Control 
                                     type="text" 
-                                    placeholder="Titulo" 
+                                    placeholder="Título do chat" 
                                     onChange={e => this.setState({titulo: e.target.value})} 
                                 />
                             </Col>
