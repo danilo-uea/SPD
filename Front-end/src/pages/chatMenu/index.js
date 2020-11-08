@@ -7,7 +7,8 @@ export default class ChatMenu extends Component{
 
     state = {
         chats: [],
-        token: localStorage.getItem('token-do-usuario')
+        token: localStorage.getItem('token-do-usuario'),
+        id: localStorage.getItem('id-do-usuario')
     }
 
     componentDidMount(){
@@ -22,8 +23,18 @@ export default class ChatMenu extends Component{
             this.setState({chats: chats});        
     };
 
+    deletarChat = async (id) =>{
+        await api.delete(`chats/remove/${id}`);
+        this.loadChat();
+    }
+
+    sairChat = async (id)=>{
+        await api.delete(`/chats/remove/${id}/${this.state.id}`);
+        this.loadChat();
+    }
+
     render(){
-        const {chats, token} = this.state;
+        const {chats, token, id} = this.state;
         if (token === "")
             return(
                 <Alert variant="success">
@@ -33,14 +44,32 @@ export default class ChatMenu extends Component{
         else
             return(
                 <div className="lista-chats">
-                    {chats.map(chat => (
-                    <Card key={chat._id} style={{ marginBottom: '20px' }}>
-                       <Card.Header>{chat.titulo}</Card.Header>
-                       <Card.Body>
-                           <Button href={`chat/${chat._id}`}>Acessar</Button>
-                       </Card.Body>
-                    </Card>
-                    ))}
+                    {chats.map(chat => {
+                        if (chat.idCriador === id)
+                            return(
+                                <Card key={chat._id} style={{ marginBottom: '20px' }}>
+                                    <Card.Header>{chat.titulo}</Card.Header>
+                                    <Card.Body>
+                                        <Button href={`chat/${chat._id}`}>Acessar</Button>
+                                        <hr />
+                                        <Button onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        else
+                            return(
+                                <Card key={chat._id} style={{ marginBottom: '20px' }}>
+                                    <Card.Header>{chat.titulo}</Card.Header>
+                                    <Card.Body>
+                                        <Button href={`chat/${chat._id}`}>Acessar</Button>
+                                        <hr />
+                                        <Button onClick={()=> this.sairChat(chat._id)}>sair do chat</Button>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        
+                    }
+                    )}
                      <div>
                         <Button href="/criarChat">Criar chat</Button>
                     </div>

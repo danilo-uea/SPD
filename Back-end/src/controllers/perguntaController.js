@@ -42,6 +42,7 @@ module.exports = {
     },
     async removePergunta(req, res){
         await Pergunta.findByIdAndRemove(req.params.id);
+        await Resposta.deleteMany({"pergunta": req.params.id})
         return res.send();
     }
 }

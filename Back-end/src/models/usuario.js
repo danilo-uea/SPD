@@ -9,6 +9,10 @@ const UsuarioSchema = new mongoose.Schema({
     senha: {
         type: String,
         required: true
+    },
+    adm: {
+        type: Boolean,
+        default: false
     }
 });
 

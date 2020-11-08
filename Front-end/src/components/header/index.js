@@ -16,7 +16,7 @@ export default class Header extends Component{
                 </Form>
             );
         } else {
-            const login = localStorage.getItem('login-do-usuario');
+            const login = localStorage.getItem('login-do-usuario');           
             return(
                 <Form inline>
                     <Nav className="mr-auto">
@@ -28,9 +28,25 @@ export default class Header extends Component{
         }
     }
 
+    isAdm = () => {
+        const adm = localStorage.getItem('isAdm')
+        if(adm === "true"){
+            return(
+                <Form inline>
+                        <Nav.Link href="/adm/users">Listar Usuarios</Nav.Link>
+                        <Nav.Link href="/adm/chats">Listar Chats</Nav.Link>
+                </Form>
+            );
+        }
+        else
+            return null;
+    }
+
     sair = () => {
         localStorage.setItem('token-do-usuario', "");
         localStorage.setItem('login-do-usuario', "");
+        localStorage.setItem('isAdm', false);
+        localStorage.setItem('id-do-usuario', "");
         window.location.href = '/';
     }
 
@@ -39,10 +55,9 @@ export default class Header extends Component{
     }
 
     tratamentoLogo = () => {
-        var pergunta = window.location.pathname.toString().indexOf('pergunta');
-        var chat = window.location.pathname.toString().indexOf('chat');
-        
-        if (pergunta === 1 || chat === 1) {
+        var verificar = window.location.pathname.toString().indexOf('pergunta');
+
+        if (verificar === 1) {
             return (
                 null
             );
@@ -62,6 +77,7 @@ export default class Header extends Component{
     }
  
     render(){
+        //const x = this.isAdm();
         return(
                 <Navbar stick="top" bg="dark" variant="dark" expand="lg">
                     <Container>
@@ -72,6 +88,7 @@ export default class Header extends Component{
                                 <Nav.Link href="/">Home</Nav.Link>
                                 <Nav.Link href="/enviarPergunta">Enviar pergunta</Nav.Link>
                                 <Nav.Link href="/chat">Chat</Nav.Link>
+                                {this.isAdm()}
                             </Nav>
                             {this.isLogin()}
                         </Navbar.Collapse>

@@ -10,20 +10,28 @@ export default class Question extends Component{
         usuario: {},
         page: 1,
         resp : "",
-        token: localStorage.getItem('token-do-usuario')
+        token: localStorage.getItem('token-do-usuario'),
+        adm: localStorage.getItem('isAdm'),
+        id: localStorage.getItem('id-do-usuario')
     }
     
     async componentDidMount(page = 1){
         const { id } = this.props.match.params;
                 
         const perguntas = await api.get(`/perguntas/${id}`);
-        const respostas = await api.get(`/respostas/${id}`);
-        const { data } = respostas;
         const { usuario, ...questao } = perguntas.data;
+        this.setState({questao, usuario, page});
+
+        this.loadRespostas();
         
-        this.setState({questao, usuario, respostas: data, page});
     }
 
+    loadRespostas = async () => {
+        const {id} = this.props.match.params;
+        const respostas = await api.get(`/respostas/${id}`);
+        this.setState({respostas: respostas.data});
+    }
+/*
     prevPage = () => {
         const { page } = this.state;
 
@@ -41,7 +49,7 @@ export default class Question extends Component{
         const pageNumber = page + 1;
         this.componentDidMount(pageNumber);
     }
-
+*/
     submeterResposta = async e => {
         e.preventDefault();
         const {resp, token} = this.state;
@@ -51,7 +59,7 @@ export default class Question extends Component{
         } else {
             try {
                 await api.post("/respostas", {"texto": resp, "pergunta": this.props.match.params.id}, {headers: header});
-                this.componentDidMount();
+                this.loadRespostas();
                 document.getElementById('texto').value = '';
             } catch(err) {
                 alert("errou");
@@ -59,9 +67,33 @@ export default class Question extends Component{
         }
     }
 
+    perguntaAutorAdm = (id_usuario) => {
+        const {adm, id} = this.state;
+
+        if(adm || id === id_usuario){
+            return <Button onClick={() => this.removePergunta(this.props.match.params.id)}>Deletar</Button>
+        }
+        else
+            return
+    }
+
+    
+
+    removerResposta = async (id) => {
+        await api.delete(`/respostas/remove/${id}`);
+        this.loadRespostas();
+    }
+
+    removePergunta = async (id) => {
+        await api.delete(`/perguntas/remove/${id}`);
+        window.location.href= "/";
+    }
+
     render(){
-        const {questao, respostas, usuario} = this.state;
-        
+        const {questao, respostas, usuario, adm, id} = this.state;
+
+        const x = this.perguntaAutorAdm(usuario._id);
+
         return(
 
             <div className="pergunta-info">
@@ -73,18 +105,34 @@ export default class Question extends Component{
                             Categoria:  {questao.categoria}<br></br>
                         </Card.Text>
                         <div className="login-data">{usuario.login} - {questao.publicacao}</div>
-                    </Card.Body>
+                        {x}
+                   </Card.Body>
+                    
                 </Card>
                 <hr />
                 <p className="resposta-p">Respostas</p>
                 <Card>
                     <ListGroup variant="flush">
-                        {respostas.map(response => (
-                            <ListGroup.Item key={response._id}>
+                        {respostas.map(response => {
+                            if(adm || id === response.usuario._id){
+                                return (
+                                    <ListGroup.Item key={response._id}>
                                 <p>{response.texto}</p>
                                 <p className="login-data">{response.usuario.login} - {response.publicacao}</p>
-                            </ListGroup.Item>
-                        ))}
+                                <Button onClick={() => this.removerResposta(response._id)}>Deletar</Button>
+                             </ListGroup.Item>
+                                )
+                            }
+                            else{
+                                return (
+                                    <ListGroup.Item key={response._id}>
+                                <p>{response.texto}</p>
+                                <p className="login-data">{response.usuario.login} - {response.publicacao}</p>
+                             </ListGroup.Item>
+                                )
+                            }
+                        }       
+                    )}
                     </ListGroup>
                 </Card>
                 <Form className="formulario" onSubmit={this.submeterResposta}>

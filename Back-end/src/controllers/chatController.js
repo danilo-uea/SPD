@@ -33,12 +33,18 @@ module.exports = {
         const adicionar = await UsuarioChat.create(req.body);
         return res.json(adicionar);
     },
+    async removeUsuario(req, res){
+        const {chat, usuario} = req.params;
+        await UsuarioChat.deleteOne({"idChat": chat, "idUsuario": usuario});
+        return res.send();
+    },
     async updateChat(req, res){
         const chat = await Chat.findByIdAndUpdate(req.params.id, req.body, {new: true});
         return res.json(chat);
     },
     async removeChat(req, res){
         await Chat.findByIdAndRemove(req.params.id);
+        await UsuarioChat.deleteMany({"idChat": req.params.id})
         return res.send();
     }
 }

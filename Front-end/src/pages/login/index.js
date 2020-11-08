@@ -21,6 +21,8 @@ export default class Login extends Component{
                 const response = await api.get("/usuarios/" + login + "/" + senha);
                 localStorage.setItem('token-do-usuario', response.data.token);
                 localStorage.setItem('login-do-usuario', login);
+                localStorage.setItem('isAdm', response.data.usuario.adm);
+                localStorage.setItem('id-do-usuario', response.data.usuario._id);
                 window.location.href = '/';
             } catch(err) {
                 console.log(err);

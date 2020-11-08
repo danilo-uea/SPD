@@ -10,6 +10,8 @@ import ChatMenu from "./pages/chatMenu/index";
 import ChatRoom from "./pages/chatRoom/index";
 import ChatAdd from "./pages/chatAdd/index";
 import CreateChat from "./pages/createChat/index";
+import AllChats from "./pages/allChats/index";
+import AllUsers from "./pages/allUsers/index";
 
 const Routes = () => (
     <BrowserRouter>
@@ -23,6 +25,8 @@ const Routes = () => (
             <Route exact path="/chat/:id" component={ChatRoom} />
             <Route path="/chat/add/:id" component={ChatAdd} />
             <Route path="/criarChat" component={CreateChat} />
+            <Route path="/adm/chats" component={AllChats} />
+            <Route path="/adm/users" component={AllUsers} />
         </Switch>
     </BrowserRouter>
 );

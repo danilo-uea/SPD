@@ -20,7 +20,7 @@ module.exports = {
         return res.json(usuarios);
     },
     async showUsuario(req,res){
-        const usuario = await Usuario.findById(req.params.id);
+        const usuario = await Usuario.findById(req.userId);
         return res.json(usuario);
     },
     async storeUsuario(req, res){
