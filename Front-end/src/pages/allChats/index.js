@@ -32,8 +32,7 @@ export default class ChatMenu extends Component{
                                 <Card key={chat._id} style={{ marginBottom: '20px' }}>
                                     <Card.Header>{chat.titulo}</Card.Header>
                                     <Card.Body>
-                                        <hr />
-                                        <Button onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
+                                        <Button variant="danger" onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
                                     </Card.Body>
                                 </Card>
                             )

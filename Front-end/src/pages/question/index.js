@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import api from '../../services/api';
 import { Form, InputGroup, FormControl, Button, Card, ListGroup } from 'react-bootstrap';
+import {data_hora} from '../../services/formatos';
 import './styles.css'
 
 export default class Question extends Component{
@@ -31,25 +32,7 @@ export default class Question extends Component{
         const respostas = await api.get(`/respostas/${id}`);
         this.setState({respostas: respostas.data});
     }
-/*
-    prevPage = () => {
-        const { page } = this.state;
 
-        if(page === 1) return;
-
-        const pageNumber = page - 1;
-        this.componentDidMount(pageNumber);
-    }
-
-    nextPage = () => {
-        const {page, respostasInfo} = this.state;
-
-        if(page === respostasInfo.pages) return;
-
-        const pageNumber = page + 1;
-        this.componentDidMount(pageNumber);
-    }
-*/
     submeterResposta = async e => {
         e.preventDefault();
         const {resp, token} = this.state;
@@ -91,7 +74,6 @@ export default class Question extends Component{
 
     render(){
         const {questao, respostas, usuario, adm, id} = this.state;
-
         const x = this.perguntaAutorAdm(usuario._id);
 
         return(
@@ -104,7 +86,7 @@ export default class Question extends Component{
                         <Card.Text>
                             Categoria:  {questao.categoria}<br></br>
                         </Card.Text>
-                        <div className="login-data">{usuario.login} - {questao.publicacao}</div>
+                        <div className="login-data">{usuario.login} - {data_hora(questao.publicacao)}</div>
                         {x}
                    </Card.Body>
                     
@@ -118,7 +100,7 @@ export default class Question extends Component{
                                 return (
                                     <ListGroup.Item key={response._id}>
                                 <p>{response.texto}</p>
-                                <p className="login-data">{response.usuario.login} - {response.publicacao}</p>
+                                <p className="login-data">{response.usuario.login} - {data_hora(response.publicacao)}</p>
                                 <Button onClick={() => this.removerResposta(response._id)}>Deletar</Button>
                              </ListGroup.Item>
                                 )
@@ -126,8 +108,8 @@ export default class Question extends Component{
                             else{
                                 return (
                                     <ListGroup.Item key={response._id}>
-                                <p>{response.texto}</p>
-                                <p className="login-data">{response.usuario.login} - {response.publicacao}</p>
+                                    <p>{response.texto}</p>
+                                    <p className="login-data">{response.usuario.login} - {data_hora(response.publicacao)}</p>
                              </ListGroup.Item>
                                 )
                             }

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import api from "../../services/api";
-import { Button, Card, Alert } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 
 
 export default class ChatMenu extends Component{
@@ -33,8 +33,7 @@ export default class ChatMenu extends Component{
                                 <Card key={user._id} style={{ marginBottom: '20px' }}>
                                     <Card.Header>{user.login}</Card.Header>
                                     <Card.Body>
-                                        <hr />
-                                        <Button onClick={()=> this.deletarUser(user._id)}>deletar usuario</Button>
+                                        <Button variant="danger" onClick={()=> this.deletarUser(user._id)}>Deletar usuário</Button>
                                     </Card.Body>
                                 </Card>
                             )
