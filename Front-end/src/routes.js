@@ -12,6 +12,7 @@ import ChatAdd from "./pages/chatAdd/index";
 import CreateChat from "./pages/createChat/index";
 import AllChats from "./pages/allChats/index";
 import AllUsers from "./pages/allUsers/index";
+import Search from "./pages/search/index";
 
 const Routes = () => (
     <BrowserRouter>
@@ -27,6 +28,7 @@ const Routes = () => (
             <Route path="/criarChat" component={CreateChat} />
             <Route path="/adm/chats" component={AllChats} />
             <Route path="/adm/users" component={AllUsers} />
+            <Route path="/pesquisa/:categoria" component={Search} />
         </Switch>
     </BrowserRouter>
 );

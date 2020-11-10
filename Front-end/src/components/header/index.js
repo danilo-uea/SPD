@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
-import { Navbar, Nav, Form, Container, Button} from 'react-bootstrap';
+import { Navbar, Nav, Form, Container, Button } from 'react-bootstrap';
 import './styles.css';
 
 export default class Header extends Component{
+
+    state = {
+        pesquisa: ""
+    }
+
     isLogin = () => {
         const token = localStorage.getItem('token-do-usuario');
 
@@ -55,11 +60,9 @@ export default class Header extends Component{
     }
 
     tratamentoLogo = () => {
-        var pergunta = window.location.pathname.toString().indexOf('pergunta');
-        var chat = window.location.pathname.toString().indexOf('chat');
-        var adm = window.location.pathname.toString().indexOf('adm');
+        var verificar = window.location.pathname.toString().indexOf('pergunta');
 
-        if (pergunta === 1 || chat === 1 || adm === 1) {
+        if (verificar === 1) {
             return (
                 null
             );
@@ -77,6 +80,11 @@ export default class Header extends Component{
             );
         }
     }
+
+    pesquisar = (e) => {
+        e.preventDefault();
+        window.location.href = `/pesquisa/${this.state.pesquisa}`;
+    }
  
     render(){
         //const x = this.isAdm();
@@ -92,6 +100,10 @@ export default class Header extends Component{
                                 <Nav.Link href="/chat">Chat</Nav.Link>
                                 {this.isAdm()}
                             </Nav>
+                            <form onSubmit={this.pesquisar}>
+                                <input type="text" placeholder="Insira uma categoria" onChange={e => this.setState(({pesquisa: e.target.value}))}/>
+                                <Button type="submit">Pesquisar</Button>
+                            </form>
                             {this.isLogin()}
                         </Navbar.Collapse>
                     </Container>

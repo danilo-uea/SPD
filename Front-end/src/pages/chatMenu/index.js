@@ -51,8 +51,8 @@ export default class ChatMenu extends Component{
                                     <Card.Header>{chat.titulo}</Card.Header>
                                     <Card.Body>
                                         <Button href={`chat/${chat._id}`}>Acessar</Button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <Button variant="danger" onClick={()=> this.deletarChat(chat._id)}>Deletar chat</Button>
+                                        <hr />
+                                        <Button onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
                                     </Card.Body>
                                 </Card>
                             )
@@ -62,8 +62,8 @@ export default class ChatMenu extends Component{
                                     <Card.Header>{chat.titulo}</Card.Header>
                                     <Card.Body>
                                         <Button href={`chat/${chat._id}`}>Acessar</Button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <Button variant="warning" onClick={()=> this.sairChat(chat._id)}>Sair do chat</Button>
+                                        <hr />
+                                        <Button onClick={()=> this.sairChat(chat._id)}>sair do chat</Button>
                                     </Card.Body>
                                 </Card>
                             )

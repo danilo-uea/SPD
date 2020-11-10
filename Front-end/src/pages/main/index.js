@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import api from "../../services/api";
 import { Button, Card } from 'react-bootstrap';
-import {data_hora} from '../../services/formatos';
 import './styles.css';
 
 export default class Main extends Component {
@@ -51,7 +50,7 @@ export default class Main extends Component {
                         <Card.Header>{pergunta.titulo}</Card.Header>
                         <Card.Body>
                             <Card.Title>{pergunta.texto}</Card.Title>
-                            <Card.Text className="login-data">{data_hora(pergunta.publicacao)}</Card.Text>
+                            <Card.Text className="login-data">{pergunta.publicacao}</Card.Text>
                             <Button href={`pergunta/${pergunta._id}`}>Acessar</Button>
                         </Card.Body>
                     </Card>

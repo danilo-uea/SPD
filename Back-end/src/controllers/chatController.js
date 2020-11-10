@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Chat = mongoose.model("Chat");
+const Mensagem = mongoose.model("Mensagem");
 const UsuarioChat = mongoose.model("UsuarioChat");
 
 module.exports = {
@@ -45,6 +46,7 @@ module.exports = {
     async removeChat(req, res){
         await Chat.findByIdAndRemove(req.params.id);
         await UsuarioChat.deleteMany({"idChat": req.params.id})
+        await Mensagem.deleteMany({"idChat": req.params.id});
         return res.send();
     }
 }

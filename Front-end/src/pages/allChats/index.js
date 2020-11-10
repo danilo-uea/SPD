@@ -30,9 +30,10 @@ export default class ChatMenu extends Component{
                     {chats.map(chat => {
                             return(
                                 <Card key={chat._id} style={{ marginBottom: '20px' }}>
-                                    <Card.Header>{chat.titulo}</Card.Header>
+                                    
                                     <Card.Body>
-                                        <Button variant="danger" onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
+                                        <Card.Title>{chat.titulo}</Card.Title>
+                                        <Button onClick={()=> this.deletarChat(chat._id)}>deletar chat</Button>
                                     </Card.Body>
                                 </Card>
                             )

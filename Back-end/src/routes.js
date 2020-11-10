@@ -22,6 +22,7 @@ routes.get('/perguntas/:id', perguntaController.showPergunta);
 routes.post("/perguntas", auth ,perguntaController.storePergunta);
 routes.put("/perguntas/:id", perguntaController.updatePergunta);
 routes.delete("/perguntas/remove/:id", perguntaController.removePergunta);
+routes.get("/perguntas/pesquisar/:categoria", perguntaController.pesquisarPergunta);
 
 routes.get("/respostas/:id", respostaController.PerguntaResposta);
 routes.get("/respostas", respostaController.indexResposta);

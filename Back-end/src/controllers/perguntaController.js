@@ -44,5 +44,9 @@ module.exports = {
         await Pergunta.findByIdAndRemove(req.params.id);
         await Resposta.deleteMany({"pergunta": req.params.id})
         return res.send();
+    },
+    async pesquisarPergunta(req, res){
+        const response = await Pergunta.find({"categoria": req.params.categoria});
+        return res.json(response);
     }
 }
