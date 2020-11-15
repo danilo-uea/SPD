@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Navbar, Nav, Form, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Form, Container, Button, FormControl } from 'react-bootstrap';
 import './styles.css';
 
 export default class Header extends Component{
@@ -60,9 +60,10 @@ export default class Header extends Component{
     }
 
     tratamentoLogo = () => {
-        var verificar = window.location.pathname.toString().indexOf('pergunta');
+        var pergunta = window.location.pathname.toString().indexOf('pergunta');
+        var adm = window.location.pathname.toString().indexOf('adm');
 
-        if (verificar === 1) {
+        if (pergunta === 1 || adm === 1) {
             return (
                 null
             );
@@ -100,10 +101,14 @@ export default class Header extends Component{
                                 <Nav.Link href="/chat">Chat</Nav.Link>
                                 {this.isAdm()}
                             </Nav>
-                            <form onSubmit={this.pesquisar}>
+                            <Form inline onSubmit={this.pesquisar}>
+                                <FormControl type="text" placeholder="Insira uma categoria" className="mr-sm-2" onChange={e => this.setState(({pesquisa: e.target.value}))} />
+                                <Button type="submit">Pesquisar</Button>
+                            </Form>
+                            {/* <form onSubmit={this.pesquisar}>
                                 <input type="text" placeholder="Insira uma categoria" onChange={e => this.setState(({pesquisa: e.target.value}))}/>
                                 <Button type="submit">Pesquisar</Button>
-                            </form>
+                            </form> */}
                             {this.isLogin()}
                         </Navbar.Collapse>
                     </Container>
