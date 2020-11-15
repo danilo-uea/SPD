@@ -62,8 +62,9 @@ export default class Header extends Component{
     tratamentoLogo = () => {
         var pergunta = window.location.pathname.toString().indexOf('pergunta');
         var adm = window.location.pathname.toString().indexOf('adm');
+        var pesquisa = window.location.pathname.toString().indexOf('pesquisa');
 
-        if (pergunta === 1 || adm === 1) {
+        if (pergunta === 1 || adm === 1 || pesquisa === 1) {
             return (
                 null
             );
